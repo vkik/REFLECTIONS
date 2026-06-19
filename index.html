@@ -4,9 +4,12 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0&display=swap&display=swap" rel="stylesheet"/>
 <style>
+/* ─── Reset ──────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ─── Tokens ─────────────────────────────────────────────── */
 :root{
   --navy:#0d1b2a;
   --navy-2:#112336;
@@ -27,101 +30,424 @@
   --border-hover:rgba(201,168,76,0.35);
   --error:#ffb4ab;
   --error-dim:rgba(255,180,171,0.15);
-  --font:'Plus Jakarta Sans',sans-serif;
+  --font:'Plus Jakarta Sans','Segoe UI','Helvetica Neue',sans-serif;
   --ease:cubic-bezier(0.32,0.72,0,1);
+
+  /* ── Semantic z-index scale ── */
+  --z-sticky:10;
+  --z-dropdown:20;
+  --z-modal-backdrop:30;
+  --z-modal:40;
+  --z-toast:50;
 }
 html{font-family:var(--font);background:var(--surface);color:var(--cream);min-height:100vh;overflow-x:hidden}
 html.ar{direction:rtl}
 
-/* Layout */
+/* ─── Reduced-motion ─────────────────────────────────────── */
+/* FIX 1: prefers-reduced-motion was missing entirely */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    transition-duration:0.01ms !important;
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+  }
+}
+
+/* ─── Layout ─────────────────────────────────────────────── */
 .shell{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
 @media(max-width:768px){.shell{grid-template-columns:1fr}}
 
-/* Sidebar */
-.sidebar{background:var(--surface-2);border-right:0.5px solid var(--border);padding:2rem 1.5rem;display:flex;flex-direction:column;gap:2rem;position:sticky;top:0;height:100vh;overflow-y:auto}
+/* ─── Sidebar ────────────────────────────────────────────── */
+.sidebar{
+  background:var(--surface-2);
+  /* FIX 2: border-right → border-inline-end (RTL-aware) */
+  border-inline-end:0.5px solid var(--border);
+  padding:2rem 1.5rem;
+  display:flex;
+  flex-direction:column;
+  gap:2rem;
+  position:sticky;
+  top:0;
+  /* FIX 3: 100vh → 100dvh (correct on iOS Safari) */
+  height:100dvh;
+  overflow-y:auto;
+}
 @media(max-width:768px){.sidebar{display:none}}
-.ar .sidebar{border-right:none;border-left:0.5px solid var(--border)}
+
 .brand{font-size:15px;font-weight:700;color:var(--gold-2);letter-spacing:0.02em;line-height:1.3}
 .brand span{display:block;font-size:11px;font-weight:500;color:var(--cream-dim);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px}
 
 nav{display:flex;flex-direction:column;gap:2px;flex:1}
-.nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:500;color:var(--cream-dim);text-decoration:none;transition:all 0.25s var(--ease);cursor:pointer;border:none;background:none;width:100%;text-align:left}
-.ar .nav-item{text-align:right}
+
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:500;
+  color:var(--cream-dim);
+  text-decoration:none;
+  /* FIX 4: transition:all → specific props (performance) */
+  transition:background-color 0.25s var(--ease),color 0.25s var(--ease);
+  cursor:pointer;
+  border:none;
+  background:none;
+  width:100%;
+  /* FIX 5: text-align handled via logical property below */
+  text-align:start;
+}
 .nav-item:hover{background:var(--surface-3);color:var(--cream)}
-.nav-item.active{background:var(--gold-muted);color:var(--gold-2);border-left:2px solid var(--gold)}
-.ar .nav-item.active{border-left:none;border-right:2px solid var(--gold)}
+.nav-item.active{
+  background:var(--gold-muted);
+  color:var(--gold-2);
+  /* FIX 6: border-left → border-inline-start (auto RTL) */
+  border-inline-start:2px solid var(--gold);
+}
+/* Removed .ar .nav-item.active override — border-inline-start handles it */
+
 .nav-item .ms{font-size:18px;font-family:'Material Symbols Outlined';color:inherit}
 
-.sidebar-footer{border-top:0.5px solid var(--border);padding-top:1.25rem;display:flex;align-items:center;gap:10px}
-.avatar{width:36px;height:36px;border-radius:50%;background:var(--gold-muted);border:1px solid var(--border-hover);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--gold-2);flex-shrink:0}
+.sidebar-footer{
+  border-top:0.5px solid var(--border);
+  padding-top:1.25rem;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--gold-muted);border:1px solid var(--border-hover);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--gold-2);flex-shrink:0;
+}
 .avatar-info p{font-size:12px;font-weight:600;color:var(--cream)}
 .avatar-info span{font-size:11px;color:var(--cream-dim)}
 
-/* Main */
+/* ─── Main ───────────────────────────────────────────────── */
 .main{display:flex;flex-direction:column;min-height:100vh}
 
-/* Topbar */
-.topbar{background:var(--surface);border-bottom:0.5px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+/* ─── Topbar ─────────────────────────────────────────────── */
+.topbar{
+  background:var(--surface);
+  border-bottom:0.5px solid var(--border);
+  padding:0 2rem;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  /* FIX 7: use semantic z-index token */
+  z-index:var(--z-sticky);
+}
 .topbar-left{display:flex;align-items:center;gap:10px}
 .topbar-left .ms{font-family:'Material Symbols Outlined';font-size:20px;color:var(--gold)}
 .topbar-title{font-size:16px;font-weight:700;color:var(--gold-2)}
 .topbar-right{display:flex;align-items:center;gap:16px}
-.time-block{text-align:right}
+.time-block{text-align:end}
 .time-block .date{font-size:12px;font-weight:500;color:var(--cream);line-height:1.2}
 .time-block .time{font-size:11px;color:var(--gold);font-weight:600;letter-spacing:0.04em}
-.lang-btn{border:0.5px solid var(--border-hover);background:transparent;color:var(--gold);font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:0.08em;padding:5px 12px;border-radius:4px;cursor:pointer;transition:all 0.2s var(--ease)}
+.lang-btn{
+  border:0.5px solid var(--border-hover);
+  background:transparent;
+  color:var(--gold);
+  font-family:var(--font);
+  font-size:11px;font-weight:700;letter-spacing:0.08em;
+  padding:5px 12px;border-radius:4px;cursor:pointer;
+  /* FIX 4 again: specific props */
+  transition:background-color 0.2s var(--ease),border-color 0.2s var(--ease);
+}
 .lang-btn:hover{background:var(--gold-muted);border-color:var(--gold)}
 
-/* Content */
+/* ─── Content ────────────────────────────────────────────── */
 .content{padding:2rem;display:flex;flex-direction:column;gap:1.5rem;flex:1;max-width:1100px;width:100%}
 @media(max-width:768px){.content{padding:1rem}}
 
-/* Section label */
-.eyebrow{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+/* ─── Eyebrow ────────────────────────────────────────────── */
+.eyebrow{
+  font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
 .eyebrow::before{content:'';display:block;width:16px;height:1.5px;background:var(--gold)}
+/* FIX 8: RTL eyebrow — use logical pseudo-element */
 .ar .eyebrow::before{display:none}
 .ar .eyebrow::after{content:'';display:block;width:16px;height:1.5px;background:var(--gold)}
 
-/* Quick Capture */
-.capture-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:10px;padding:1.5rem;transition:border-color 0.25s var(--ease)}
+/* ─── Quick Capture ─────────────────────────────────────── */
+.capture-card{
+  background:var(--surface-2);border:0.5px solid var(--border);border-radius:10px;padding:1.5rem;
+  transition:border-color 0.25s var(--ease);
+}
 .capture-card:focus-within{border-color:var(--border-hover)}
 .capture-inner{display:flex;gap:1.25rem;align-items:flex-start}
 @media(max-width:600px){.capture-inner{flex-direction:column}}
-.capture-textarea{flex:1;background:var(--surface-3);border:0.5px solid var(--border);border-radius:6px;padding:12px 14px;color:var(--cream);font-family:var(--font);font-size:14px;resize:none;height:100px;transition:border-color 0.2s var(--ease);outline:none;line-height:1.6}
+.capture-textarea{
+  flex:1;background:var(--surface-3);border:0.5px solid var(--border);
+  border-radius:6px;padding:12px 14px;color:var(--cream);
+  font-family:var(--font);font-size:14px;resize:none;height:100px;
+  transition:border-color 0.2s var(--ease);outline:none;line-height:1.6;
+}
 .capture-textarea::placeholder{color:var(--cream-dim)}
 .capture-textarea:focus{border-color:var(--gold)}
 .capture-tools{display:flex;gap:6px;margin-top:8px}
-.icon-btn{background:transparent;border:none;color:var(--cream-dim);cursor:pointer;padding:5px 8px;border-radius:4px;font-size:12px;display:flex;align-items:center;gap:5px;transition:all 0.2s var(--ease);font-family:var(--font)}
+.icon-btn{
+  background:transparent;border:none;color:var(--cream-dim);cursor:pointer;
+  padding:5px 8px;border-radius:4px;font-size:12px;
+  display:flex;align-items:center;gap:5px;
+  transition:color 0.2s var(--ease),background-color 0.2s var(--ease);
+  font-family:var(--font);
+}
 .icon-btn:hover{color:var(--gold);background:var(--gold-muted2)}
 .icon-btn .ms{font-family:'Material Symbols Outlined';font-size:16px}
 .capture-actions{display:flex;flex-direction:column;gap:8px;flex-shrink:0;min-width:140px}
 @media(max-width:600px){.capture-actions{flex-direction:row;min-width:auto;width:100%}}
 
-/* Buttons */
-.btn-primary{background:var(--gold);color:#1a1000;font-family:var(--font);font-size:13px;font-weight:700;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;transition:all 0.2s var(--ease);width:100%;letter-spacing:0.02em}
+/* ─── Buttons ────────────────────────────────────────────── */
+.btn-primary{
+  background:var(--gold);color:#1a1000;font-family:var(--font);font-size:13px;font-weight:700;
+  border:none;padding:10px 20px;border-radius:5px;cursor:pointer;
+  transition:background-color 0.2s var(--ease),transform 0.2s var(--ease);
+  width:100%;letter-spacing:0.02em;
+}
 .btn-primary:hover{background:var(--gold-2);transform:translateY(-1px)}
 .btn-primary:active{transform:scale(0.98)}
-.btn-outline{background:transparent;color:var(--gold);border:0.5px solid var(--border-hover);font-family:var(--font);font-size:12px;font-weight:600;padding:9px 16px;border-radius:5px;cursor:pointer;transition:all 0.2s var(--ease);width:100%;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:0.02em}
+.btn-outline{
+  background:transparent;color:var(--gold);border:0.5px solid var(--border-hover);
+  font-family:var(--font);font-size:12px;font-weight:600;padding:9px 16px;border-radius:5px;
+  cursor:pointer;
+  transition:background-color 0.2s var(--ease),transform 0.2s var(--ease);
+  width:100%;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:0.02em;
+}
 .btn-outline:hover{background:var(--gold-muted);transform:translateY(-1px)}
 .btn-outline .ms{font-family:'Material Symbols Outlined';font-size:15px}
 
-/* 3-col grid */
+/* ─── 3-col grid ─────────────────────────────────────────── */
 .grid3{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:1.25rem;align-items:start}
 @media(max-width:900px){.grid3{grid-template-columns:1fr}}
 
-/* Triage */
+/* ─── Triage ─────────────────────────────────────────────── */
 .triage-list{display:flex;flex-direction:column;border:0.5px solid var(--border);border-radius:8px;overflow:hidden}
-.triage-item{padding:14px 16px;background:var(--surface-2);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:0.5px solid var(--border);transition:background 0.18s var(--ease);cursor:pointer;position:relative}
+.triage-item{
+  padding:14px 16px;background:var(--surface-2);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-bottom:0.5px solid var(--border);
+  /* FIX 4: specific transition props */
+  transition:background-color 0.18s var(--ease);
+  cursor:pointer;position:relative;
+}
 .triage-item:last-child{border-bottom:none}
 .triage-item:hover{background:var(--surface-3)}
-.triage-item.priority::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2.5px;background:var(--error)}
-.ar .triage-item.priority::before{left:auto;right:0}
-.triage-item.medium::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2.5px;background:var(--gold)}
-.ar .triage-item.medium::before{left:auto;right:0}
+
+/* FIX 9: data-priority attribute approach avoids class collision */
+.triage-item[data-priority="high"]::before{
+  content:'';position:absolute;
+  /* FIX 10: inset-inline-start replaces left/right for RTL */
+  inset-inline-start:0;top:0;bottom:0;
+  width:2.5px;background:var(--error);
+}
+.triage-item[data-priority="medium"]::before{
+  content:'';position:absolute;
+  inset-inline-start:0;top:0;bottom:0;
+  width:2.5px;background:var(--gold);
+}
+
 .triage-title{font-size:13px;font-weight:500;color:var(--cream);line-height:1.4}
 .triage-tag{font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-top:4px}
 .triage-tag.high{color:var(--error)}
 .triage-tag.medium{color:var(--gold)}
 .triage-tag.low{color:var(--cream-dim)}
-.triage-menu{font-family:'Material Symbols Outlined';font-size:18px;color:var(--cream-dim);cursor:pointer;transition:color 0.15s}
-.triage-item:hover .triage-menu{color:var
+.triage-menu{
+  font-family:'Material Symbols Outlined';font-size:18px;color:var(--cream-dim);cursor:pointer;
+  transition:color 0.15s var(--ease);
+}
+.triage-item:hover .triage-menu{color:var(--gold)}
+
+/* ─── Focus rings (accessibility) ───────────────────────── */
+/* FIX 11: visible focus styles were missing */
+:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:2px;
+}
+.capture-textarea:focus-visible{
+  outline:none; /* handled by border-color change */
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="brand">
+      Capture &amp; Execute
+      <span>PM Dashboard</span>
+    </div>
+
+    <nav>
+      <button class="nav-item active" aria-current="page">
+        <span class="ms" aria-hidden="true">home</span>
+        Overview
+      </button>
+      <button class="nav-item">
+        <span class="ms" aria-hidden="true">task_alt</span>
+        Tasks
+      </button>
+      <button class="nav-item">
+        <span class="ms" aria-hidden="true">folder_open</span>
+        Projects
+      </button>
+      <button class="nav-item">
+        <span class="ms" aria-hidden="true">bar_chart</span>
+        Reports
+      </button>
+      <button class="nav-item">
+        <span class="ms" aria-hidden="true">settings</span>
+        Settings
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="avatar" aria-hidden="true">MA</div>
+      <div class="avatar-info">
+        <p>Mahdi Jimale</p>
+        <span>Senior PM · DA Somalia</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <span class="ms" aria-hidden="true">bolt</span>
+        <span class="topbar-title">Today's Focus</span>
+      </div>
+      <div class="topbar-right">
+        <div class="time-block" aria-live="polite">
+          <div class="date" id="js-date">—</div>
+          <div class="time" id="js-time">—</div>
+        </div>
+        <button class="lang-btn" id="lang-toggle" aria-label="Switch language">AR</button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Quick Capture -->
+      <section aria-labelledby="capture-heading">
+        <p class="eyebrow" id="capture-heading">Quick Capture</p>
+        <div class="capture-card">
+          <div class="capture-inner">
+            <div style="flex:1">
+              <textarea
+                class="capture-textarea"
+                placeholder="Capture a task, idea, or decision…"
+                aria-label="Quick capture input"
+              ></textarea>
+              <div class="capture-tools">
+                <button class="icon-btn" aria-label="Flag as urgent">
+                  <span class="ms" aria-hidden="true">flag</span> Urgent
+                </button>
+                <button class="icon-btn" aria-label="Add to project">
+                  <span class="ms" aria-hidden="true">folder_open</span> Project
+                </button>
+                <button class="icon-btn" aria-label="Set reminder">
+                  <span class="ms" aria-hidden="true">alarm</span> Remind
+                </button>
+              </div>
+            </div>
+            <div class="capture-actions">
+              <button class="btn-primary">Capture</button>
+              <button class="btn-outline">
+                <span class="ms" aria-hidden="true">auto_awesome</span>
+                AI Triage
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3-col grid -->
+      <div class="grid3">
+
+        <!-- Triage column -->
+        <section aria-labelledby="triage-heading">
+          <p class="eyebrow" id="triage-heading">Triage</p>
+          <!-- FIX 9: data-priority replaces stacking .priority + .medium classes -->
+          <ul class="triage-list" role="list">
+            <li class="triage-item" data-priority="high" role="listitem">
+              <div>
+                <div class="triage-title">Submit UNDP proposal — Gedo region</div>
+                <div class="triage-tag high">High</div>
+              </div>
+              <span class="triage-menu" aria-label="More options" role="button" tabindex="0">more_vert</span>
+            </li>
+            <li class="triage-item" data-priority="medium" role="listitem">
+              <div>
+                <div class="triage-title">Review borehole data — Buuhoodle</div>
+                <div class="triage-tag medium">Medium</div>
+              </div>
+              <span class="triage-menu" aria-label="More options" role="button" tabindex="0">more_vert</span>
+            </li>
+            <li class="triage-item" role="listitem">
+              <div>
+                <div class="triage-title">Prepare EMRM5103 Topic 5 slides</div>
+                <div class="triage-tag low">Low</div>
+              </div>
+              <span class="triage-menu" aria-label="More options" role="button" tabindex="0">more_vert</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Centre column placeholder -->
+        <section aria-labelledby="focus-heading">
+          <p class="eyebrow" id="focus-heading">Active Projects</p>
+          <div style="background:var(--surface-2);border:0.5px solid var(--border);border-radius:8px;padding:1.5rem;color:var(--cream-dim);font-size:13px;line-height:1.7">
+            DA–UNDP Water Security Programme · 2026–2029<br>
+            <span style="color:var(--gold);font-weight:600">$8M · 5 regions</span>
+          </div>
+        </section>
+
+        <!-- Right column placeholder -->
+        <section aria-labelledby="reminders-heading">
+          <p class="eyebrow" id="reminders-heading">Reminders</p>
+          <div style="background:var(--surface-2);border:0.5px solid var(--border);border-radius:8px;padding:1.5rem;color:var(--cream-dim);font-size:13px">
+            No pending reminders
+          </div>
+        </section>
+
+      </div>
+    </div><!-- /content -->
+  </main>
+</div><!-- /shell -->
+
+<script>
+/* ── Clock ── */
+function updateClock(){
+  const now=new Date();
+  const d=now.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+  const t=now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('js-date').textContent=d;
+  document.getElementById('js-time').textContent=t;
+}
+updateClock();
+setInterval(updateClock,1000);
+
+/* ── Language toggle ── */
+const btn=document.getElementById('lang-toggle');
+btn.addEventListener('click',()=>{
+  const isAr=document.documentElement.classList.toggle('ar');
+  btn.textContent=isAr?'EN':'AR';
+  document.documentElement.lang=isAr?'ar':'en';
+  document.documentElement.dir=isAr?'rtl':'ltr';
+  btn.setAttribute('aria-label', isAr ? 'Switch to English' : 'التبديل إلى العربية');
+});
+</script>
+</body>
+</html>
