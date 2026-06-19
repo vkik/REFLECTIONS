@@ -73,4 +73,55 @@ nav{display:flex;flex-direction:column;gap:2px;flex:1}
 .lang-btn:hover{background:var(--gold-muted);border-color:var(--gold)}
 
 /* Content */
-.content{padding:2rem;display:flex;flex-direction:column;gap:1.5rem;flex:1;
+.content{padding:2rem;display:flex;flex-direction:column;gap:1.5rem;flex:1;max-width:1100px;width:100%}
+@media(max-width:768px){.content{padding:1rem}}
+
+/* Section label */
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.eyebrow::before{content:'';display:block;width:16px;height:1.5px;background:var(--gold)}
+.ar .eyebrow::before{display:none}
+.ar .eyebrow::after{content:'';display:block;width:16px;height:1.5px;background:var(--gold)}
+
+/* Quick Capture */
+.capture-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:10px;padding:1.5rem;transition:border-color 0.25s var(--ease)}
+.capture-card:focus-within{border-color:var(--border-hover)}
+.capture-inner{display:flex;gap:1.25rem;align-items:flex-start}
+@media(max-width:600px){.capture-inner{flex-direction:column}}
+.capture-textarea{flex:1;background:var(--surface-3);border:0.5px solid var(--border);border-radius:6px;padding:12px 14px;color:var(--cream);font-family:var(--font);font-size:14px;resize:none;height:100px;transition:border-color 0.2s var(--ease);outline:none;line-height:1.6}
+.capture-textarea::placeholder{color:var(--cream-dim)}
+.capture-textarea:focus{border-color:var(--gold)}
+.capture-tools{display:flex;gap:6px;margin-top:8px}
+.icon-btn{background:transparent;border:none;color:var(--cream-dim);cursor:pointer;padding:5px 8px;border-radius:4px;font-size:12px;display:flex;align-items:center;gap:5px;transition:all 0.2s var(--ease);font-family:var(--font)}
+.icon-btn:hover{color:var(--gold);background:var(--gold-muted2)}
+.icon-btn .ms{font-family:'Material Symbols Outlined';font-size:16px}
+.capture-actions{display:flex;flex-direction:column;gap:8px;flex-shrink:0;min-width:140px}
+@media(max-width:600px){.capture-actions{flex-direction:row;min-width:auto;width:100%}}
+
+/* Buttons */
+.btn-primary{background:var(--gold);color:#1a1000;font-family:var(--font);font-size:13px;font-weight:700;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;transition:all 0.2s var(--ease);width:100%;letter-spacing:0.02em}
+.btn-primary:hover{background:var(--gold-2);transform:translateY(-1px)}
+.btn-primary:active{transform:scale(0.98)}
+.btn-outline{background:transparent;color:var(--gold);border:0.5px solid var(--border-hover);font-family:var(--font);font-size:12px;font-weight:600;padding:9px 16px;border-radius:5px;cursor:pointer;transition:all 0.2s var(--ease);width:100%;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:0.02em}
+.btn-outline:hover{background:var(--gold-muted);transform:translateY(-1px)}
+.btn-outline .ms{font-family:'Material Symbols Outlined';font-size:15px}
+
+/* 3-col grid */
+.grid3{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:1.25rem;align-items:start}
+@media(max-width:900px){.grid3{grid-template-columns:1fr}}
+
+/* Triage */
+.triage-list{display:flex;flex-direction:column;border:0.5px solid var(--border);border-radius:8px;overflow:hidden}
+.triage-item{padding:14px 16px;background:var(--surface-2);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:0.5px solid var(--border);transition:background 0.18s var(--ease);cursor:pointer;position:relative}
+.triage-item:last-child{border-bottom:none}
+.triage-item:hover{background:var(--surface-3)}
+.triage-item.priority::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2.5px;background:var(--error)}
+.ar .triage-item.priority::before{left:auto;right:0}
+.triage-item.medium::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2.5px;background:var(--gold)}
+.ar .triage-item.medium::before{left:auto;right:0}
+.triage-title{font-size:13px;font-weight:500;color:var(--cream);line-height:1.4}
+.triage-tag{font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-top:4px}
+.triage-tag.high{color:var(--error)}
+.triage-tag.medium{color:var(--gold)}
+.triage-tag.low{color:var(--cream-dim)}
+.triage-menu{font-family:'Material Symbols Outlined';font-size:18px;color:var(--cream-dim);cursor:pointer;transition:color 0.15s}
+.triage-item:hover .triage-menu{color:var
