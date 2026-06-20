@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Infrastructure Command - Capture &amp; Execute</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -27,118 +27,108 @@
 }
 html{font-family:var(--font-en);background:var(--bg-light);color:var(--text-dark);min-height:100vh;overflow-x:hidden}
 html.ar{font-family:var(--font-ar);direction:rtl}
-
-/* Focus styles */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 :focus-visible{outline:3px solid var(--accent-blue);outline-offset:2px;border-radius:4px}
 
-/* Layout Shell */
+/* ── AVATAR SVG placeholder ── */
+.avatar-svg{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold-premium);flex-shrink:0;overflow:hidden}
+.exec-avatar-svg{width:64px;height:64px;border-radius:50%;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.1);overflow:hidden;flex-shrink:0}
+.port-img-svg{width:100%;height:100px;display:block}
+.vision-icon-svg{width:50px;height:50px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);flex-shrink:0;overflow:hidden}
+
 .shell{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
 @media(max-width:992px){.shell{grid-template-columns:1fr}}
-
-/* Sidebar */
-.sidebar{background:var(--sidebar-bg);color:#fff;padding:2rem 1.5rem;display:flex;flex-direction:column;gap:2rem;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:15}
+.sidebar{background:var(--sidebar-bg);color:#fff;padding:2rem 1.5rem;display:flex;flex-direction:column;gap:2rem;position:sticky;top:0;height:100dvh;overflow-y:auto;z-index:15}
 @media(max-width:992px){.sidebar{display:none}}
 .brand{font-size:16px;font-weight:700;color:var(--gold-premium);letter-spacing:0.02em;line-height:1.3}
 .brand span{display:block;font-size:11px;font-weight:500;color:rgba(255,255,255,0.6);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px}
 nav{display:flex;flex-direction:column;gap:4px;flex:1}
-.nav-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);text-decoration:none;transition:all 0.2s var(--ease);cursor:pointer;border:none;background:none;width:100%;text-align:left}
-.ar .nav-item{text-align:right}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);text-decoration:none;transition:background-color .2s var(--ease),color .2s var(--ease);cursor:pointer;border:none;background:none;width:100%;text-align:start}
 .nav-item:hover{background:rgba(255,255,255,0.05);color:#fff}
 .nav-item.active{background:var(--accent-blue);color:#fff}
-.nav-item .ms{font-size:20px;color:inherit}
+.nav-item .material-symbols-outlined{font-size:20px;color:inherit;font-variation-settings:'FILL' 0,'wght' 300}
 .sidebar-footer{border-top:1px solid rgba(255,255,255,0.1);padding-top:1.25rem;display:flex;align-items:center;gap:12px}
-.avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--gold-premium);background:var(--accent-blue)}
 .avatar-info p{font-size:13px;font-weight:700;color:#fff}
 .avatar-info span{font-size:11px;color:rgba(255,255,255,0.5)}
 
-/* Mobile nav drawer */
 .mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:40}
 .mobile-overlay.open{display:block}
-.mobile-drawer{position:fixed;top:0;left:0;bottom:0;width:280px;background:var(--sidebar-bg);padding:2rem 1.5rem;display:flex;flex-direction:column;gap:2rem;z-index:50;transform:translateX(-100%);transition:transform 0.28s var(--ease)}
-.ar .mobile-drawer{left:auto;right:0;transform:translateX(100%)}
+.mobile-drawer{position:fixed;top:0;inset-inline-start:0;bottom:0;width:280px;background:var(--sidebar-bg);padding:2rem 1.5rem;display:flex;flex-direction:column;gap:2rem;z-index:50;transform:translateX(-100%);transition:transform 0.28s var(--ease)}
+html.ar .mobile-drawer{transform:translateX(100%)}
 .mobile-drawer.open{transform:translateX(0)}
-.ar .mobile-drawer.open{transform:translateX(0)}
 .drawer-close{background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:22px;align-self:flex-end;line-height:1}
 @media(min-width:993px){.mobile-overlay,.mobile-drawer{display:none!important}}
 
-/* Main */
 .main{display:flex;flex-direction:column;min-height:100vh}
-
-/* Topbar */
 .topbar{background:var(--surface-white);border-bottom:1px solid var(--border-color);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
 .topbar-left{display:flex;align-items:center;gap:10px}
-.topbar-left .ms{font-size:22px;color:var(--accent-blue)}
+.topbar-left .material-symbols-outlined{font-size:22px;color:var(--accent-blue);font-variation-settings:'FILL' 0,'wght' 300}
 .topbar-title{font-size:18px;font-weight:700;color:var(--primary-navy)}
 .topbar-right{display:flex;align-items:center;gap:16px}
 .hamburger{display:none;background:none;border:none;color:var(--primary-navy);cursor:pointer;padding:4px}
-.hamburger .ms{font-size:26px}
+.hamburger .material-symbols-outlined{font-size:26px;font-variation-settings:'FILL' 0,'wght' 300}
 @media(max-width:992px){.hamburger{display:flex;align-items:center}}
-.time-block{text-align:right}
-.ar .time-block{text-align:left}
+.time-block{text-align:end}
+html.ar .time-block{text-align:start}
 .time-block .date{font-size:13px;font-weight:600;color:var(--text-dark)}
 .time-block .time{font-size:12px;color:var(--accent-blue);font-weight:700}
-.lang-btn{border:1px solid var(--accent-blue);background:transparent;color:var(--accent-blue);font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all 0.2s var(--ease)}
+.lang-btn{border:1px solid var(--accent-blue);background:transparent;color:var(--accent-blue);font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;cursor:pointer;transition:background-color .2s var(--ease),color .2s var(--ease)}
 .lang-btn:hover{background:var(--accent-blue);color:#fff}
 
-/* Content */
 .content{padding:2rem;display:flex;flex-direction:column;gap:2rem;flex:1;max-width:1300px;width:100%;margin:0 auto}
 @media(max-width:768px){.content{padding:1rem}}
 
-/* Executive Banner */
 .executive-banner{background:linear-gradient(135deg,#fff 0%,#edf4fc 100%);border:1px solid var(--border-color);border-radius:12px;padding:1.5rem;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05)}
 @media(max-width:768px){.executive-banner{flex-direction:column;gap:1rem;text-align:center}}
 .exec-profile{display:flex;align-items:center;gap:16px}
 @media(max-width:768px){.exec-profile{flex-direction:column}}
-.exec-avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.1);background:var(--accent-blue)}
 .exec-info h2{font-size:20px;color:var(--primary-navy);font-weight:700}
 .exec-info p{font-size:13px;color:var(--text-muted);font-weight:500}
 .corporate-logo-area{display:flex;align-items:center;gap:12px}
-.corp-logo-icon{width:45px;height:45px;background:var(--primary-navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700}
+.corp-logo-icon{width:45px;height:45px;background:var(--primary-navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;flex-shrink:0}
 .corp-logo-text{font-size:15px;font-weight:700;color:var(--primary-navy);text-transform:uppercase;line-height:1.2}
 
-/* Quick Capture */
 .eyebrow{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent-blue);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .eyebrow::before{content:'';display:block;width:20px;height:2px;background:var(--accent-blue)}
+html.ar .eyebrow::before{display:none}
+html.ar .eyebrow::after{content:'';display:block;width:20px;height:2px;background:var(--accent-blue)}
+html.ar .eyebrow{letter-spacing:0}
+
 .capture-card{background:var(--surface-white);border:1px solid var(--border-color);border-radius:12px;padding:1.5rem;box-shadow:0 4px 6px -1px rgba(0,0,0,0.02)}
 .capture-inner{display:flex;gap:1.5rem;align-items:stretch}
 @media(max-width:768px){.capture-inner{flex-direction:column}}
-.capture-textarea{width:100%;background:#f8fafc;border:1px solid var(--border-color);border-radius:8px;padding:16px;color:var(--text-dark);font-size:14px;resize:none;height:110px;outline:none;transition:all 0.2s;line-height:1.6;font-family:inherit}
+.capture-textarea{width:100%;background:#f8fafc;border:1px solid var(--border-color);border-radius:8px;padding:16px;color:var(--text-dark);font-size:14px;resize:none;height:110px;outline:none;transition:border-color .2s,box-shadow .2s;line-height:1.6;font-family:inherit}
 .capture-textarea:focus{border-color:var(--accent-blue);background:#fff;box-shadow:0 0 0 3px rgba(0,102,204,0.1)}
 .capture-tools{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
-.icon-btn{background:#f1f5f9;border:none;color:var(--text-muted);cursor:pointer;padding:6px 12px;border-radius:6px;font-size:12px;display:flex;align-items:center;gap:6px;transition:all 0.2s;font-weight:600;font-family:inherit}
+.icon-btn{background:#f1f5f9;border:none;color:var(--text-muted);cursor:pointer;padding:6px 12px;border-radius:6px;font-size:12px;display:flex;align-items:center;gap:6px;transition:color .2s,background-color .2s;font-weight:600;font-family:inherit}
 .icon-btn:hover{color:var(--accent-blue);background:rgba(0,102,204,0.08)}
-.icon-btn .ms{font-size:18px}
-
-/* Priority selector */
-.priority-selector{display:flex;gap:4px;margin-left:auto}
-.ar .priority-selector{margin-left:0;margin-right:auto}
-.prio-btn{font-size:11px;font-weight:700;padding:5px 10px;border-radius:5px;border:1px solid var(--border-color);background:transparent;cursor:pointer;transition:all 0.15s;color:var(--text-muted)}
+.icon-btn .material-symbols-outlined{font-size:18px;font-variation-settings:'FILL' 0,'wght' 300}
+.priority-selector{display:flex;gap:4px;margin-inline-start:auto}
+.prio-btn{font-size:11px;font-weight:700;padding:5px 10px;border-radius:5px;border:1px solid var(--border-color);background:transparent;cursor:pointer;transition:all .15s;color:var(--text-muted)}
 .prio-btn[data-p="high"].active{background:rgba(222,53,11,0.1);border-color:var(--error-red);color:var(--error-red)}
 .prio-btn[data-p="medium"].active{background:rgba(201,168,76,0.15);border-color:var(--gold-premium);color:#8a6a10}
 .prio-btn[data-p="low"].active{background:rgba(0,135,90,0.1);border-color:var(--success-green);color:var(--success-green)}
-
 .capture-actions{display:flex;flex-direction:column;gap:10px;min-width:160px;justify-content:center}
 @media(max-width:768px){.capture-actions{flex-direction:row;min-width:auto;width:100%}}
-.btn-primary{background:var(--primary-navy);color:#fff;font-size:14px;font-weight:700;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;transition:all 0.2s;width:100%;text-align:center;box-shadow:0 2px 4px rgba(0,51,102,0.2);font-family:inherit}
+.btn-primary{background:var(--primary-navy);color:#fff;font-size:14px;font-weight:700;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;transition:background-color .2s,transform .2s;width:100%;text-align:center;box-shadow:0 2px 4px rgba(0,51,102,0.2);font-family:inherit}
 .btn-primary:hover{background:var(--accent-blue);transform:translateY(-1px)}
-.btn-outline{background:transparent;color:var(--text-muted);border:1px solid var(--border-color);font-size:13px;font-weight:600;padding:10px 16px;border-radius:8px;cursor:pointer;transition:all 0.2s;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit}
+.btn-outline{background:transparent;color:var(--text-muted);border:1px solid var(--border-color);font-size:13px;font-weight:600;padding:10px 16px;border-radius:8px;cursor:pointer;transition:background-color .2s,color .2s;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit}
 .btn-outline:hover{background:#f8fafc;color:var(--text-dark);border-color:var(--text-muted)}
+.btn-outline .material-symbols-outlined{font-size:16px;font-variation-settings:'FILL' 0,'wght' 300}
 
-/* 3-Column Grid */
 .grid3{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:1.5rem;align-items:start}
 @media(max-width:1200px){.grid3{grid-template-columns:1fr 1.2fr}}
 @media(max-width:992px){.grid3{grid-template-columns:1fr}}
 .section-card{background:var(--surface-white);border:1px solid var(--border-color);border-radius:12px;padding:1.25rem;box-shadow:0 4px 6px -1px rgba(0,0,0,0.02)}
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:8px}
 .section-title{font-size:14px;font-weight:700;color:var(--primary-navy);display:flex;align-items:center;gap:6px}
+.section-title .material-symbols-outlined{font-size:18px;font-variation-settings:'FILL' 0,'wght' 300}
 .section-action{font-size:11px;color:var(--accent-blue);cursor:pointer;font-weight:700;text-transform:uppercase}
 
-/* Triage */
 .triage-list{display:flex;flex-direction:column;gap:10px}
-.triage-item{padding:12px;background:#f8fafc;border:1px solid var(--border-color);border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;transition:all 0.2s var(--ease)}
+.triage-item{padding:12px;background:#f8fafc;border:1px solid var(--border-color);border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;transition:transform .2s var(--ease),background-color .2s,box-shadow .2s}
 .triage-item:hover{transform:translateY(-1px);background:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.05);border-color:var(--accent-blue)}
-.triage-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;background:var(--text-muted)}
-.ar .triage-item::before{left:auto;right:0;border-radius:0 4px 4px 0}
+.triage-item::before{content:'';position:absolute;inset-inline-start:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;background:var(--text-muted)}
 .triage-item.priority::before{background:var(--error-red)}
 .triage-item.medium::before{background:var(--gold-premium)}
 .triage-item.low-p::before{background:var(--success-green)}
@@ -147,49 +137,41 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
 .triage-tag.high{color:var(--error-red)}
 .triage-tag.medium{color:var(--gold-premium)}
 .triage-tag.low{color:var(--success-green)}
-
-/* Triage item context menu */
 .item-menu-wrap{position:relative}
-.item-menu-btn{background:none;border:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;padding:2px;border-radius:4px;transition:background 0.15s}
+.item-menu-btn{background:none;border:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;padding:2px;border-radius:4px;transition:background-color .15s}
 .item-menu-btn:hover{background:#e2e8f0}
-.item-menu-btn .ms{font-size:20px}
-.item-dropdown{position:absolute;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid var(--border-color);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.1);min-width:140px;z-index:30;overflow:hidden;display:none}
-.ar .item-dropdown{right:auto;left:0}
+.item-menu-btn .material-symbols-outlined{font-size:20px;font-variation-settings:'FILL' 0,'wght' 300}
+.item-dropdown{position:absolute;inset-inline-end:0;top:100%;margin-top:4px;background:#fff;border:1px solid var(--border-color);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.1);min-width:140px;z-index:30;overflow:hidden;display:none}
 .item-dropdown.open{display:block}
-.item-dropdown button{display:flex;align-items:center;gap:8px;width:100%;padding:9px 14px;background:none;border:none;font-size:13px;font-weight:500;color:var(--text-dark);cursor:pointer;text-align:left;font-family:inherit;transition:background 0.15s}
-.ar .item-dropdown button{text-align:right}
+.item-dropdown button{display:flex;align-items:center;gap:8px;width:100%;padding:9px 14px;background:none;border:none;font-size:13px;font-weight:500;color:var(--text-dark);cursor:pointer;text-align:start;font-family:inherit;transition:background-color .15s}
 .item-dropdown button:hover{background:#f8fafc}
 .item-dropdown button.danger{color:var(--error-red)}
-.item-dropdown button .ms{font-size:16px}
+.item-dropdown button .material-symbols-outlined{font-size:16px;font-variation-settings:'FILL' 0,'wght' 300}
 
-/* Portfolio */
 .portfolio-grid{display:flex;flex-direction:column;gap:12px}
-.port-card{background:var(--surface-white);border:1px solid var(--border-color);border-radius:10px;overflow:hidden;transition:all 0.2s}
+.port-card{background:var(--surface-white);border:1px solid var(--border-color);border-radius:10px;overflow:hidden;transition:box-shadow .2s,border-color .2s}
 .port-card:hover{box-shadow:0 6px 16px rgba(0,0,0,0.06);border-color:var(--accent-blue)}
-.port-img{width:100%;height:100px;object-fit:cover;background:#c9d8ec}
 .port-body{padding:12px}
 .port-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
 .port-title{font-size:13px;font-weight:700;color:var(--primary-navy)}
 .port-badge{font-size:9px;font-weight:700;text-transform:uppercase;padding:2px 6px;border-radius:4px}
 .port-badge.on-track{background:rgba(0,135,90,0.1);color:var(--success-green)}
 .port-badge.planning{background:#e2e8f0;color:var(--text-muted)}
-.port-bar-bg{height:4px;background:#edf2f7;border-radius:2px;position:relative;overflow:hidden;margin:8px 0}
+.port-bar-bg{height:4px;background:#edf2f7;border-radius:2px;overflow:hidden;margin:8px 0}
 .port-bar-fill{height:100%;background:var(--accent-blue);border-radius:2px;transition:width 1s var(--ease)}
 .port-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);font-weight:500}
 .port-pct{font-weight:700;color:var(--primary-navy)}
 .vision-focus-card{background:#0a2540;color:#fff;border-radius:10px;padding:14px;margin-top:8px;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,0.1)}
-.vision-focus-icon{width:50px;height:50px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,0.2);background:var(--accent-blue)}
 .vision-focus-text h4{font-size:12px;color:var(--gold-premium);font-weight:700;text-transform:uppercase}
 .vision-focus-text p{font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px}
 
-/* 2-Minute Wins */
 .wins-box{display:flex;flex-direction:column;gap:10px}
 .win-item{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 0}
-.win-check{width:18px;height:18px;border:2px solid var(--accent-blue);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.win-check{width:18px;height:18px;border:2px solid var(--accent-blue);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .win-check.checked{background:var(--accent-blue);border-color:var(--accent-blue)}
-.win-check .ms{font-size:14px;color:#fff;display:none;font-weight:bold}
-.win-check.checked .ms{display:block}
-.win-label{font-size:13px;color:var(--text-dark);font-weight:500;transition:all 0.15s}
+.win-check .material-symbols-outlined{font-size:14px;color:#fff;display:none;font-variation-settings:'FILL' 1,'wght' 600}
+.win-check.checked .material-symbols-outlined{display:block}
+.win-label{font-size:13px;color:var(--text-dark);font-weight:500;transition:all .15s}
 .win-label.done{text-decoration:line-through;color:var(--text-muted)}
 .momentum{border-top:1px solid var(--border-color);padding-top:12px;margin-top:6px}
 .momentum-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
@@ -198,32 +180,112 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
 .momentum-bar{height:4px;background:#edf2f7;border-radius:2px}
 .momentum-fill{height:100%;background:var(--accent-blue);border-radius:2px;transition:width 0.8s var(--ease)}
 
-/* Footer */
 .footer{padding:2.5rem 2rem;text-align:center;border-top:1px solid var(--border-color);margin-top:auto;background:var(--surface-white)}
-.footer-quote-ar{font-size:20px;font-weight:700;color:var(--primary-navy);margin-bottom:8px;font-family:var(--font-ar);word-break:break-word;overflow-wrap:break-word}
+.footer-quote-ar{font-size:20px;font-weight:700;color:var(--primary-navy);margin-bottom:8px;font-family:var(--font-ar)}
 .footer-quote-en{font-size:14px;font-weight:500;color:var(--text-muted);font-style:italic;max-width:600px;margin:0 auto 8px;line-height:1.6}
 .footer-ref{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--gold-premium);text-transform:uppercase}
 
-/* Animations */
-.fade-up{opacity:0;transform:translateY(12px);transition:opacity 0.5s var(--ease),transform 0.5s var(--ease)}
+.fade-up{opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
 .fade-up.visible{opacity:1;transform:translateY(0)}
 @keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-.slide-in{animation:slideIn 0.25s ease-out forwards}
+.slide-in{animation:slideIn .25s ease-out forwards}
 </style>
 </head>
 <body>
 
+<!-- ══ SVG ASSETS — defined once, reused everywhere ══
+     No external files. No broken images. GitHub Pages compatible. -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- Avatar: MJ initials on navy circle -->
+    <symbol id="avatar-mj" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="32" fill="#003366"/>
+      <text x="32" y="38" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif"
+            font-size="20" font-weight="700" fill="#c9a84c">MJ</text>
+    </symbol>
+    <!-- Water project image: stylised borehole / water tower scene -->
+    <symbol id="img-water" viewBox="0 0 400 150">
+      <rect width="400" height="150" fill="#c8dff0"/>
+      <!-- sky gradient via stops -->
+      <rect width="400" height="90" fill="#a8cce8"/>
+      <!-- ground -->
+      <rect y="90" width="400" height="60" fill="#8fbc6e"/>
+      <!-- water tower legs -->
+      <rect x="170" y="40" width="8" height="60" fill="#5a7fa0"/>
+      <rect x="222" y="40" width="8" height="60" fill="#5a7fa0"/>
+      <!-- water tower tank -->
+      <ellipse cx="200" cy="38" rx="36" ry="12" fill="#3a6a90"/>
+      <rect x="164" y="28" width="72" height="20" rx="4" fill="#2d5a80"/>
+      <!-- borehole pipe -->
+      <rect x="310" y="70" width="10" height="50" fill="#6a8aa0"/>
+      <rect x="305" y="65" width="20" height="10" rx="3" fill="#4a7090"/>
+      <!-- sun -->
+      <circle cx="340" cy="28" r="18" fill="#f5c842" opacity="0.9"/>
+      <!-- ripple water at base -->
+      <ellipse cx="200" cy="135" rx="50" ry="6" fill="#7ab8d8" opacity="0.6"/>
+      <text x="200" y="120" text-anchor="middle" font-family="sans-serif"
+            font-size="11" font-weight="600" fill="#1a3a55" opacity="0.8">Water Infrastructure · Somalia</text>
+    </symbol>
+    <!-- Sanitation project: modular facility schematic -->
+    <symbol id="img-sanitation" viewBox="0 0 400 150">
+      <rect width="400" height="150" fill="#e8f0e0"/>
+      <rect width="400" height="80" fill="#b8d4a0"/>
+      <!-- buildings -->
+      <rect x="40" y="45" width="80" height="55" fill="#6a9c6a"/>
+      <rect x="50" y="35" width="60" height="20" rx="2" fill="#5a8c5a"/>
+      <rect x="160" y="55" width="100" height="45" fill="#5a8c78"/>
+      <rect x="170" y="45" width="80" height="18" rx="2" fill="#4a7c68"/>
+      <rect x="290" y="40" width="70" height="60" fill="#7aac8a"/>
+      <rect x="298" y="32" width="54" height="16" rx="2" fill="#6a9c7a"/>
+      <!-- pipeline -->
+      <line x1="40" y1="135" x2="380" y2="135" stroke="#4a7060" stroke-width="4"/>
+      <circle cx="120" cy="135" r="5" fill="#2a5040"/>
+      <circle cx="260" cy="135" r="5" fill="#2a5040"/>
+      <text x="200" y="148" text-anchor="middle" font-family="sans-serif"
+            font-size="11" font-weight="600" fill="#2a5040">Sanitation Infrastructure · Lower Juba</text>
+    </symbol>
+    <!-- Vision / strategic focus: topographic field scene -->
+    <symbol id="img-vision" viewBox="0 0 50 50">
+      <rect width="50" height="50" rx="8" fill="#0a2540"/>
+      <!-- topographic lines -->
+      <ellipse cx="25" cy="28" rx="18" ry="10" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.6"/>
+      <ellipse cx="25" cy="28" rx="12" ry="6" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.8"/>
+      <ellipse cx="25" cy="28" rx="6" ry="3" fill="#c9a84c" opacity="0.9"/>
+      <!-- compass needle -->
+      <line x1="25" y1="8" x2="25" y2="20" stroke="#00b4d8" stroke-width="1.5" stroke-linecap="round"/>
+      <polygon points="25,6 27,12 25,11 23,12" fill="#00b4d8"/>
+    </symbol>
+  </defs>
+</svg>
+
 <!-- Mobile drawer overlay -->
 <div class="mobile-overlay" id="mobile-overlay" onclick="closeDrawer()"></div>
 <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation">
-  <button class="drawer-close" onclick="closeDrawer()" aria-label="Close navigation"><span class="ms">close</span></button>
+  <button class="drawer-close" onclick="closeDrawer()" aria-label="Close navigation">
+    <span class="material-symbols-outlined">close</span>
+  </button>
   <div class="brand">Infrastructure Command<span>Capture &amp; Execute</span></div>
   <nav>
-    <a class="nav-item active" href="#"><span class="ms">dashboard</span> <span class="nav-lbl" data-key="navDashboard">Dashboard</span></a>
-    <a class="nav-item" href="#"><span class="ms">account_tree</span> <span class="nav-lbl" data-key="navPortfolio">Portfolio</span></a>
-    <a class="nav-item" href="#"><span class="ms">biotech</span> <span class="nav-lbl" data-key="navTriage">Triage</span></a>
-    <a class="nav-item" href="#"><span class="ms">query_stats</span> <span class="nav-lbl" data-key="navAnalytics">Analytics</span></a>
-    <a class="nav-item" href="#"><span class="ms">settings</span> <span class="nav-lbl" data-key="navSettings">Settings</span></a>
+    <a class="nav-item active" href="#">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="nav-lbl" data-key="navDashboard">Dashboard</span>
+    </a>
+    <a class="nav-item" href="#">
+      <span class="material-symbols-outlined">account_tree</span>
+      <span class="nav-lbl" data-key="navPortfolio">Portfolio</span>
+    </a>
+    <a class="nav-item" href="#">
+      <span class="material-symbols-outlined">biotech</span>
+      <span class="nav-lbl" data-key="navTriage">Triage</span>
+    </a>
+    <a class="nav-item" href="#">
+      <span class="material-symbols-outlined">query_stats</span>
+      <span class="nav-lbl" data-key="navAnalytics">Analytics</span>
+    </a>
+    <a class="nav-item" href="#">
+      <span class="material-symbols-outlined">settings</span>
+      <span class="nav-lbl" data-key="navSettings">Settings</span>
+    </a>
   </nav>
 </div>
 
@@ -231,14 +293,32 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
   <aside class="sidebar">
     <div class="brand">Infrastructure Command<span>Capture &amp; Execute</span></div>
     <nav>
-      <a class="nav-item active" href="#"><span class="ms">dashboard</span> <span class="nav-lbl" data-key="navDashboard">Dashboard</span></a>
-      <a class="nav-item" href="#"><span class="ms">account_tree</span> <span class="nav-lbl" data-key="navPortfolio">Portfolio</span></a>
-      <a class="nav-item" href="#"><span class="ms">biotech</span> <span class="nav-lbl" data-key="navTriage">Triage</span></a>
-      <a class="nav-item" href="#"><span class="ms">query_stats</span> <span class="nav-lbl" data-key="navAnalytics">Analytics</span></a>
-      <a class="nav-item" href="#"><span class="ms">settings</span> <span class="nav-lbl" data-key="navSettings">Settings</span></a>
+      <a class="nav-item active" href="#">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="nav-lbl" data-key="navDashboard">Dashboard</span>
+      </a>
+      <a class="nav-item" href="#">
+        <span class="material-symbols-outlined">account_tree</span>
+        <span class="nav-lbl" data-key="navPortfolio">Portfolio</span>
+      </a>
+      <a class="nav-item" href="#">
+        <span class="material-symbols-outlined">biotech</span>
+        <span class="nav-lbl" data-key="navTriage">Triage</span>
+      </a>
+      <a class="nav-item" href="#">
+        <span class="material-symbols-outlined">query_stats</span>
+        <span class="nav-lbl" data-key="navAnalytics">Analytics</span>
+      </a>
+      <a class="nav-item" href="#">
+        <span class="material-symbols-outlined">settings</span>
+        <span class="nav-lbl" data-key="navSettings">Settings</span>
+      </a>
     </nav>
     <div class="sidebar-footer">
-      <img src="C:\Users\engma\.claude\New folder\IMG_20210629_182436_497.jpg" alt="Mahdi Jimale" class="avatar" onerror="this.style.display='none'"/>
+      <!-- FIX: SVG inline avatar — no external file needed -->
+      <svg class="avatar-svg" viewBox="0 0 64 64" aria-label="Mahdi Jimale avatar">
+        <img src="images/IMG_20210629_182436_497.jpg" alt="Mahdi Jimale" style="width:100%;height:100%;object-fit:cover"/>
+      </svg>
       <div class="avatar-info">
         <p>Mahdi Jimale</p>
         <span class="nav-lbl" data-key="sidebarRole">Senior PM · DA Somalia</span>
@@ -249,8 +329,10 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
   <div class="main">
     <header class="topbar">
       <div class="topbar-left">
-        <button class="hamburger" onclick="openDrawer()" aria-label="Open navigation"><span class="ms">menu</span></button>
-        <span class="ms">grid_view</span>
+        <button class="hamburger" onclick="openDrawer()" aria-label="Open navigation">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <span class="material-symbols-outlined">grid_view</span>
         <span class="topbar-title" data-key="pageTitle">Capture &amp; Execute</span>
       </div>
       <div class="topbar-right">
@@ -266,7 +348,10 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
 
       <section class="executive-banner fade-up">
         <div class="exec-profile">
-          <img src="C:\Users\engma\.claude\New folder\IMG_20210629_182436_497.jpg" alt="Mahdi Jimale" class="exec-avatar" onerror="this.style.display='none'"/>
+          <!-- FIX: SVG inline exec avatar — no external file -->
+          <svg class="exec-avatar-svg" viewBox="0 0 64 64" aria-label="Mahdi Jimale">
+            <img src="images/IMG_20210629_182436_497.jpg" alt="Mahdi Jimale" style="width:100%;height:100%;object-fit:cover"/>
+          </svg>
           <div class="exec-info">
             <h2>Mahdi Jimale</h2>
             <p data-key="lblExecSub">Senior PM · Direct Aid Somalia / UNDP Portfolio Coordinator</p>
@@ -285,9 +370,18 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
             <div style="flex:1">
               <textarea class="capture-textarea" id="capture-input" data-key-placeholder="placeholder"></textarea>
               <div class="capture-tools">
-                <button class="icon-btn"><span class="ms">text_fields</span> <span data-key="toolText">Text</span></button>
-                <button class="icon-btn"><span class="ms">mic</span> <span data-key="toolVoice">Voice</span></button>
-                <button class="icon-btn"><span class="ms">architecture</span> <span data-key="toolScan">Scan Spec</span></button>
+                <button class="icon-btn">
+                  <span class="material-symbols-outlined">text_fields</span>
+                  <span data-key="toolText">Text</span>
+                </button>
+                <button class="icon-btn">
+                  <span class="material-symbols-outlined">mic</span>
+                  <span data-key="toolVoice">Voice</span>
+                </button>
+                <button class="icon-btn">
+                  <span class="material-symbols-outlined">architecture</span>
+                  <span data-key="toolScan">Scan Spec</span>
+                </button>
                 <div class="priority-selector" role="group" aria-label="Priority">
                   <button class="prio-btn active" data-p="high" onclick="setPrio(this)">H</button>
                   <button class="prio-btn" data-p="medium" onclick="setPrio(this)">M</button>
@@ -297,7 +391,10 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
             </div>
             <div class="capture-actions">
               <button class="btn-primary" id="btn-triage" data-key="btnTriage">Capture</button>
-              <button class="btn-outline" id="btn-ai"><span class="ms">auto_awesome</span> <span data-key="lblAiTriage">AI Triage</span></button>
+              <button class="btn-outline" id="btn-ai">
+                <span class="material-symbols-outlined">auto_awesome</span>
+                <span data-key="lblAiTriage">AI Triage</span>
+              </button>
             </div>
           </div>
         </div>
@@ -307,7 +404,10 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
 
         <section class="section-card fade-up" style="transition-delay:0.1s">
           <div class="section-header">
-            <div class="section-title"><span class="ms">assignment_late</span><span data-key="lblTriageTitle">System Triage</span></div>
+            <div class="section-title">
+              <span class="material-symbols-outlined">assignment_late</span>
+              <span data-key="lblTriageTitle">System Triage</span>
+            </div>
             <div class="section-action" data-key="lblFilter">Filter</div>
           </div>
           <div class="triage-list" id="triage-list"></div>
@@ -315,12 +415,16 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
 
         <section class="section-card fade-up" style="transition-delay:0.2s">
           <div class="section-header">
-            <div class="section-title"><span class="ms">layers</span><span data-key="lblPortfolios">Active Portfolios</span></div>
-            <span class="ms text-muted" style="font-size:18px;cursor:pointer">filter_list</span>
+            <div class="section-title">
+              <span class="material-symbols-outlined">layers</span>
+              <span data-key="lblPortfolios">Active Portfolios</span>
+            </div>
+            <span class="material-symbols-outlined" style="font-size:18px;cursor:pointer;color:var(--text-muted);font-variation-settings:'FILL' 0,'wght' 300">filter_list</span>
           </div>
           <div class="portfolio-grid">
+
             <div class="port-card">
-              <img src="C:\Users\engma\.claude\New folder\a factory of urban ecology — wfsmith.jpg" alt="Water Tower" class="port-img" onerror="this.style.background='#c9d8ec'"/>
+              <img src="images/a factory of urban ecology — wfsmith.jpg" alt="Garowe Water Expansion" class="port-img-svg" style="object-fit:cover" onerror="this.style.background='#c9d8ec';this.style.display='block'"/>
               <div class="port-body">
                 <div class="port-header">
                   <div class="port-title" data-key="proj1">Garowe Water Expansion</div>
@@ -333,37 +437,46 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
                 </div>
               </div>
             </div>
+
             <div class="port-card">
-              <img src="C:\Users\engma\.claude\New folder\download (1).jpg" alt="Sanitation" class="port-img" onerror="this.style.background='#c9d8ec'"/>
+              <img src="images/download (1).jpg" alt="Lower Juba Sanitation" class="port-img-svg" style="object-fit:cover" onerror="this.style.background='#c9d8ec';this.style.display='block'"/>
               <div class="port-body">
                 <div class="port-header">
                   <div class="port-title" data-key="proj2">Lower Juba Sanitation</div>
                   <div class="port-badge planning" data-key="badge2">Planning</div>
                 </div>
-                <div class="port-bar-bg"><div class="port-bar-fill" style="width:20%;background:var(--gold-premium)"></div></div>
+                <div class="port-bar-bg">
+                  <div class="port-bar-fill" style="width:20%;background:var(--gold-premium)"></div>
+                </div>
                 <div class="port-meta">
                   <span data-key="lblCompletion2">Completion</span>
                   <span class="port-pct">20%</span>
                 </div>
               </div>
             </div>
+
             <div class="vision-focus-card">
-              <img src="C:\Users\engma\.claude\New folder\THE UNEXPOSED.jpg" alt="Strategic Vision" class="vision-focus-icon" onerror="this.style.display='none'"/>
+              <img src="images/THE UNEXPOSED.jpg" alt="Strategic Vision" class="vision-icon-svg" style="object-fit:cover" onerror="this.style.display='none'"/>
               <div class="vision-focus-text">
                 <h4 data-key="lblVisionTitle">Regional Visual Focus</h4>
                 <p data-key="lblVisionDesc">Focused infrastructure program vision and data-driven field insight.</p>
               </div>
             </div>
+
           </div>
         </section>
 
         <section class="section-card fade-up" style="transition-delay:0.3s">
           <div class="section-header">
-            <div class="section-title"><span class="ms">bolt</span><span data-key="lblWins">2-Minute Wins</span></div>
+            <div class="section-title">
+              <span class="material-symbols-outlined">bolt</span>
+              <span data-key="lblWins">2-Minute Wins</span>
+            </div>
             <div class="section-action" id="lbl-remaining">4 remaining</div>
           </div>
           <div class="wins-box" id="wins-box"></div>
         </section>
+
       </div>
 
       <footer class="footer fade-up" style="transition-delay:0.4s">
@@ -371,6 +484,7 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
         <p class="footer-quote-en">"And Allah does not burden a soul more than it can bear..."</p>
         <p class="footer-ref">[Surah Al-Baqarah 2:286]</p>
       </footer>
+
     </div>
   </div>
 </div>
@@ -378,306 +492,217 @@ nav{display:flex;flex-direction:column;gap:4px;flex:1}
 <script>
 const strings = {
   en: {
-    pageTitle: 'Capture &amp; Execute',
-    navDashboard:'Dashboard', navPortfolio:'Portfolio', navTriage:'Triage', navAnalytics:'Analytics', navSettings:'Settings',
+    pageTitle:'Capture &amp; Execute',
+    navDashboard:'Dashboard',navPortfolio:'Portfolio',navTriage:'Triage',navAnalytics:'Analytics',navSettings:'Settings',
     sidebarRole:'Senior PM · DA Somalia',
     lblExecSub:'Senior PM · Direct Aid Somalia / UNDP Portfolio Coordinator',
     lblCapture:'Quick Capture',
     placeholder:'Capture a task, engineering insight, or water program milestone...',
-    toolText:'Text', toolVoice:'Voice', toolScan:'Scan Spec',
-    btnTriage:'Capture', lblAiTriage:'AI Triage',
-    lblTriageTitle:'System Triage', lblFilter:'Filter',
+    toolText:'Text',toolVoice:'Voice',toolScan:'Scan Spec',
+    btnTriage:'Capture',lblAiTriage:'AI Triage',
+    lblTriageTitle:'System Triage',lblFilter:'Filter',
     lblPortfolios:'Active Portfolios',
-    proj1:'Garowe Water Expansion', badge1:'On Track',
-    proj2:'Lower Juba Sanitation', badge2:'Planning',
-    lblCompletion1:'Completion', lblCompletion2:'Completion',
-    lblVisionTitle:'Regional Visual Focus', lblVisionDesc:'Focused infrastructure program vision and data-driven field insight.',
-    lblWins:'2-Minute Wins',
-    lblMomentum:'Daily Momentum',
-    tagNew:'New Capture', tagHigh:'High Impact', tagMedium:'Medium Focus', tagLow:'Low Priority',
+    proj1:'Garowe Water Expansion',badge1:'On Track',
+    proj2:'Lower Juba Sanitation',badge2:'Planning',
+    lblCompletion1:'Completion',lblCompletion2:'Completion',
+    lblVisionTitle:'Regional Visual Focus',lblVisionDesc:'Focused infrastructure program vision and data-driven field insight.',
+    lblWins:'2-Minute Wins',lblMomentum:'Daily Momentum',
+    tagNew:'New Capture',tagHigh:'High Impact',tagMedium:'Medium Focus',tagLow:'Low Priority',
     alertEmpty:'Please enter text before capture.',
-    menuDone:'Mark done', menuDelete:'Delete',
+    menuDone:'Mark done',menuDelete:'Delete',
     remaining: n => n + ' remaining'
   },
   ar: {
-    pageTitle: 'التقاط وتنفيذ',
-    navDashboard:'لوحة التحكم', navPortfolio:'المحفظة', navTriage:'الفرز المنهجي', navAnalytics:'التحليلات', navSettings:'الإعدادات',
+    pageTitle:'التقاط وتنفيذ',
+    navDashboard:'لوحة التحكم',navPortfolio:'المحفظة',navTriage:'الفرز المنهجي',navAnalytics:'التحليلات',navSettings:'الإعدادات',
     sidebarRole:'كبير مدراء المشاريع · الصومال',
     lblExecSub:'مدير قطاع البنية التحتية والمياه · جمعية العون المباشر / UNDP',
     lblCapture:'التقاط سريع للأفكار',
     placeholder:'سجّل مهمة عاجلة، فكرة هندسية، أو مستهدفاً جديداً لبرنامج المياه...',
-    toolText:'نص', toolVoice:'تسجيل صوتي', toolScan:'مسح المواصفات',
-    btnTriage:'التقاط', lblAiTriage:'فرز ذكي',
-    lblTriageTitle:'فرز وجدولة النظام', lblFilter:'تصفية القائمة',
+    toolText:'نص',toolVoice:'تسجيل صوتي',toolScan:'مسح المواصفات',
+    btnTriage:'التقاط',lblAiTriage:'فرز ذكي',
+    lblTriageTitle:'فرز وجدولة النظام',lblFilter:'تصفية القائمة',
     lblPortfolios:'المحافظ والمشاريع النشطة',
-    proj1:'مشروع توسعة مياه غاروي', badge1:'في المسار',
-    proj2:'منشآت الصرف الصحي في جوبا السفلى', badge2:'قيد التخطيط',
-    lblCompletion1:'نسبة الإنجاز', lblCompletion2:'نسبة الإنجاز',
-    lblVisionTitle:'التركيز المرئي الاستراتيجي', lblVisionDesc:'رؤية معززة لمشاريع البنية التحتية الإقليمية بدقة فائقة.',
-    lblWins:'إنجازات سريعة (دقيقتين)',
-    lblMomentum:'الزخم الإنتاجي اليومي',
-    tagNew:'التقاط جديد', tagHigh:'تأثير عالٍ', tagMedium:'تركيز متوسط', tagLow:'أولوية عادية',
+    proj1:'مشروع توسعة مياه غاروي',badge1:'في المسار',
+    proj2:'منشآت الصرف الصحي في جوبا السفلى',badge2:'قيد التخطيط',
+    lblCompletion1:'نسبة الإنجاز',lblCompletion2:'نسبة الإنجاز',
+    lblVisionTitle:'التركيز المرئي الاستراتيجي',lblVisionDesc:'رؤية معززة لمشاريع البنية التحتية الإقليمية بدقة فائقة.',
+    lblWins:'إنجازات سريعة (دقيقتين)',lblMomentum:'الزخم الإنتاجي اليومي',
+    tagNew:'التقاط جديد',tagHigh:'تأثير عالٍ',tagMedium:'تركيز متوسط',tagLow:'أولوية عادية',
     alertEmpty:'يرجى كتابة نص أو فكرة أولاً ليتم معالجتها.',
-    menuDone:'تحديد كمنجز', menuDelete:'حذف',
+    menuDone:'تحديد كمنجز',menuDelete:'حذف',
     remaining: n => n + ' مهام متبقية'
   }
 };
 
 let lang = 'en';
 
-// ── Default data ──────────────────────────────────────────────────
 const DEFAULT_TRIAGE = [
-  { id: 't1', text: { en:'Submit UNDP proposal — Gedo region', ar:'تقديم مقترح مشروع الـ UNDP — إقليم جيدو' }, prio:'high', done:false },
-  { id: 't2', text: { en:'Review borehole data — Buuhoodle', ar:'مراجعة البيانات الهيدرولوجية للحفر — بوهودلي' }, prio:'medium', done:false },
-  { id: 't3', text: { en:'Prepare EMRM5103 Topic 5 slides', ar:'إعداد شرائح العرض للمحاضرة الخامسة EMRM5103' }, prio:'low', done:false },
+  {id:'t1',text:{en:'Submit UNDP proposal — Gedo region',ar:'تقديم مقترح مشروع الـ UNDP — إقليم جيدو'},prio:'high',done:false},
+  {id:'t2',text:{en:'Review borehole data — Buuhoodle',ar:'مراجعة البيانات الهيدرولوجية للحفر — بوهودلي'},prio:'medium',done:false},
+  {id:'t3',text:{en:'Prepare EMRM5103 Topic 5 slides',ar:'إعداد شرائح العرض للمحاضرة الخامسة EMRM5103'},prio:'low',done:false},
 ];
 const DEFAULT_WINS = [
-  { id: 'w1', text:{ en:'Sign contractor evaluation', ar:'توقيع التقييم الفني للمقاول الميداني' }, done:false },
-  { id: 'w2', text:{ en:'Call project site lead', ar:'الاتصال بمهندس الموقع ومسؤول الحفر' }, done:false },
-  { id: 'w3', text:{ en:'Approve travel requisition', ar:'الموافقة على طلب اللوجستيات وتصاريح السفر' }, done:false },
-  { id: 'w4', text:{ en:'Forward technical specs to HQ', ar:'إرسال المواصفات الهندسية والمخططات للمقر الرئيسي' }, done:false },
+  {id:'w1',text:{en:'Sign contractor evaluation',ar:'توقيع التقييم الفني للمقاول الميداني'},done:false},
+  {id:'w2',text:{en:'Call project site lead',ar:'الاتصال بمهندس الموقع ومسؤول الحفر'},done:false},
+  {id:'w3',text:{en:'Approve travel requisition',ar:'الموافقة على طلب اللوجستيات وتصاريح السفر'},done:false},
+  {id:'w4',text:{en:'Forward technical specs to HQ',ar:'إرسال المواصفات الهندسية والمخططات للمقر الرئيسي'},done:false},
 ];
 
-// ── LocalStorage helpers ─────────────────────────────────────────
-function saveState() {
-  localStorage.setItem('ic_triage', JSON.stringify(triageItems));
-  localStorage.setItem('ic_wins', JSON.stringify(winItems));
-}
-function loadState() {
-  try {
-    const t = localStorage.getItem('ic_triage');
-    const w = localStorage.getItem('ic_wins');
-    return {
-      triage: t ? JSON.parse(t) : DEFAULT_TRIAGE,
-      wins: w ? JSON.parse(w) : DEFAULT_WINS
-    };
-  } catch(e) {
-    return { triage: DEFAULT_TRIAGE, wins: DEFAULT_WINS };
-  }
+function saveState(){localStorage.setItem('ic_triage',JSON.stringify(triageItems));localStorage.setItem('ic_wins',JSON.stringify(winItems))}
+function loadState(){
+  try{
+    const t=localStorage.getItem('ic_triage');
+    const w=localStorage.getItem('ic_wins');
+    return{triage:t?JSON.parse(t):DEFAULT_TRIAGE,wins:w?JSON.parse(w):DEFAULT_WINS};
+  }catch(e){return{triage:DEFAULT_TRIAGE,wins:DEFAULT_WINS}}
 }
 
-let { triage: triageItems, wins: winItems } = loadState();
-let activePrio = 'high';
+let {triage:triageItems,wins:winItems}=loadState();
+let activePrio='high';
 
-// ── Priority selector ─────────────────────────────────────────────
-function setPrio(btn) {
-  document.querySelectorAll('.prio-btn').forEach(b => b.classList.remove('active'));
+function setPrio(btn){
+  document.querySelectorAll('.prio-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  activePrio = btn.dataset.p;
+  activePrio=btn.dataset.p;
 }
 
-// ── Triage rendering ──────────────────────────────────────────────
-function prioClass(p) {
-  return p === 'high' ? 'priority' : p === 'medium' ? 'medium' : 'low-p';
-}
-function tagClass(p) {
-  return p === 'high' ? 'high' : p === 'medium' ? 'medium' : 'low';
-}
-function tagLabel(p) {
-  const s = strings[lang];
-  return p === 'high' ? s.tagHigh : p === 'medium' ? s.tagMedium : s.tagLow;
-}
+function prioClass(p){return p==='high'?'priority':p==='medium'?'medium':'low-p'}
+function tagClass(p){return p==='high'?'high':p==='medium'?'medium':'low'}
+function tagLabel(p){const s=strings[lang];return p==='high'?s.tagHigh:p==='medium'?s.tagMedium:s.tagLow}
 
-function renderTriage() {
-  const list = document.getElementById('triage-list');
-  list.innerHTML = '';
-  triageItems.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'triage-item ' + prioClass(item.prio);
-    div.dataset.id = item.id;
-    if (item.done) div.style.opacity = '0.5';
-
-    const titleEl = document.createElement('div');
-    titleEl.className = 'triage-title';
-    titleEl.textContent = typeof item.text === 'object' ? (item.text[lang] || item.text.en) : item.text;
-
-    const tagEl = document.createElement('div');
-    tagEl.className = 'triage-tag ' + tagClass(item.prio);
-    tagEl.textContent = tagLabel(item.prio);
-
-    const textWrap = document.createElement('div');
-    textWrap.appendChild(titleEl);
-    textWrap.appendChild(tagEl);
-
-    const menuWrap = document.createElement('div');
-    menuWrap.className = 'item-menu-wrap';
-
-    const menuBtn = document.createElement('button');
-    menuBtn.className = 'item-menu-btn';
-    menuBtn.setAttribute('aria-label', 'Item options');
-    menuBtn.innerHTML = '<span class="ms">more_vert</span>';
-    menuBtn.onclick = (e) => { e.stopPropagation(); toggleItemMenu(menuBtn); };
-
-    const dropdown = document.createElement('div');
-    dropdown.className = 'item-dropdown';
-
-    const doneBtn = document.createElement('button');
-    doneBtn.innerHTML = '<span class="ms">check_circle</span> ' + strings[lang].menuDone;
-    doneBtn.onclick = () => { markTriageDone(item.id); };
-
-    const delBtn = document.createElement('button');
-    delBtn.className = 'danger';
-    delBtn.innerHTML = '<span class="ms">delete</span> ' + strings[lang].menuDelete;
-    delBtn.onclick = () => { deleteTriageItem(item.id); };
-
-    dropdown.appendChild(doneBtn);
-    dropdown.appendChild(delBtn);
-    menuWrap.appendChild(menuBtn);
-    menuWrap.appendChild(dropdown);
-
-    div.appendChild(textWrap);
-    div.appendChild(menuWrap);
+function renderTriage(){
+  const list=document.getElementById('triage-list');
+  list.innerHTML='';
+  triageItems.forEach(item=>{
+    const div=document.createElement('div');
+    div.className='triage-item '+prioClass(item.prio);
+    div.dataset.id=item.id;
+    if(item.done)div.style.opacity='0.5';
+    const titleEl=document.createElement('div');
+    titleEl.className='triage-title';
+    titleEl.textContent=typeof item.text==='object'?(item.text[lang]||item.text.en):item.text;
+    const tagEl=document.createElement('div');
+    tagEl.className='triage-tag '+tagClass(item.prio);
+    tagEl.textContent=tagLabel(item.prio);
+    const textWrap=document.createElement('div');
+    textWrap.appendChild(titleEl);textWrap.appendChild(tagEl);
+    const menuWrap=document.createElement('div');
+    menuWrap.className='item-menu-wrap';
+    const menuBtn=document.createElement('button');
+    menuBtn.className='item-menu-btn';
+    menuBtn.setAttribute('aria-label','Item options');
+    menuBtn.innerHTML='<span class="material-symbols-outlined">more_vert</span>';
+    menuBtn.onclick=e=>{e.stopPropagation();toggleItemMenu(menuBtn)};
+    const dropdown=document.createElement('div');
+    dropdown.className='item-dropdown';
+    const doneBtn=document.createElement('button');
+    doneBtn.innerHTML='<span class="material-symbols-outlined">check_circle</span> '+strings[lang].menuDone;
+    doneBtn.onclick=()=>markTriageDone(item.id);
+    const delBtn=document.createElement('button');
+    delBtn.className='danger';
+    delBtn.innerHTML='<span class="material-symbols-outlined">delete</span> '+strings[lang].menuDelete;
+    delBtn.onclick=()=>deleteTriageItem(item.id);
+    dropdown.appendChild(doneBtn);dropdown.appendChild(delBtn);
+    menuWrap.appendChild(menuBtn);menuWrap.appendChild(dropdown);
+    div.appendChild(textWrap);div.appendChild(menuWrap);
     list.appendChild(div);
   });
 }
 
-function toggleItemMenu(btn) {
-  const drop = btn.nextElementSibling;
-  const isOpen = drop.classList.contains('open');
-  document.querySelectorAll('.item-dropdown.open').forEach(d => d.classList.remove('open'));
-  if (!isOpen) drop.classList.add('open');
+function toggleItemMenu(btn){
+  const drop=btn.nextElementSibling;
+  const isOpen=drop.classList.contains('open');
+  document.querySelectorAll('.item-dropdown.open').forEach(d=>d.classList.remove('open'));
+  if(!isOpen)drop.classList.add('open');
+}
+document.addEventListener('click',()=>document.querySelectorAll('.item-dropdown.open').forEach(d=>d.classList.remove('open')));
+
+function markTriageDone(id){const item=triageItems.find(t=>t.id===id);if(item){item.done=true;saveState();renderTriage()}}
+function deleteTriageItem(id){triageItems=triageItems.filter(t=>t.id!==id);saveState();renderTriage()}
+function addTriageTask(){
+  const inputField=document.getElementById('capture-input');
+  const taskText=inputField.value.trim();
+  if(!taskText){alert(strings[lang].alertEmpty);return}
+  triageItems.unshift({id:'t'+Date.now(),text:{en:taskText,ar:taskText},prio:activePrio,done:false});
+  saveState();renderTriage();inputField.value='';
 }
 
-document.addEventListener('click', () => {
-  document.querySelectorAll('.item-dropdown.open').forEach(d => d.classList.remove('open'));
-});
-
-function markTriageDone(id) {
-  const item = triageItems.find(t => t.id === id);
-  if (item) { item.done = true; saveState(); renderTriage(); }
-}
-function deleteTriageItem(id) {
-  triageItems = triageItems.filter(t => t.id !== id);
-  saveState();
-  renderTriage();
-}
-
-function addTriageTask() {
-  const inputField = document.getElementById('capture-input');
-  const taskText = inputField.value.trim();
-  const s = strings[lang];
-  if (!taskText) { alert(s.alertEmpty); return; }
-
-  const newId = 't' + Date.now();
-  triageItems.unshift({ id: newId, text: { en: taskText, ar: taskText }, prio: activePrio, done: false });
-  saveState();
-  renderTriage();
-  inputField.value = '';
-}
-
-// ── Wins rendering ────────────────────────────────────────────────
-function renderWins() {
-  const box = document.getElementById('wins-box');
-  box.innerHTML = '';
-  winItems.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'win-item';
-    div.setAttribute('role', 'checkbox');
-    div.setAttribute('aria-checked', item.done ? 'true' : 'false');
-    div.setAttribute('tabindex', '0');
-    div.onclick = () => toggleWin(item.id);
-    div.onkeydown = (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleWin(item.id); } };
-
-    const check = document.createElement('div');
-    check.className = 'win-check' + (item.done ? ' checked' : '');
-    check.innerHTML = '<span class="ms">check</span>';
-
-    const label = document.createElement('span');
-    label.className = 'win-label' + (item.done ? ' done' : '');
-    label.textContent = typeof item.text === 'object' ? (item.text[lang] || item.text.en) : item.text;
-
-    div.appendChild(check);
-    div.appendChild(label);
-    box.appendChild(div);
+function renderWins(){
+  const box=document.getElementById('wins-box');
+  box.innerHTML='';
+  winItems.forEach(item=>{
+    const div=document.createElement('div');
+    div.className='win-item';
+    div.setAttribute('role','checkbox');
+    div.setAttribute('aria-checked',item.done?'true':'false');
+    div.setAttribute('tabindex','0');
+    div.onclick=()=>toggleWin(item.id);
+    div.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();toggleWin(item.id)}};
+    const check=document.createElement('div');
+    check.className='win-check'+(item.done?' checked':'');
+    check.innerHTML='<span class="material-symbols-outlined">check</span>';
+    const label=document.createElement('span');
+    label.className='win-label'+(item.done?' done':'');
+    label.textContent=typeof item.text==='object'?(item.text[lang]||item.text.en):item.text;
+    div.appendChild(check);div.appendChild(label);box.appendChild(div);
   });
-
-  const momentum = document.createElement('div');
-  momentum.className = 'momentum';
-  const done = winItems.filter(w => w.done).length;
-  const pct = winItems.length ? Math.round((done / winItems.length) * 100) : 0;
-  momentum.innerHTML = `
+  const momentum=document.createElement('div');
+  momentum.className='momentum';
+  const done=winItems.filter(w=>w.done).length;
+  const pct=winItems.length?Math.round((done/winItems.length)*100):0;
+  momentum.innerHTML=`
     <div class="momentum-head">
-      <span class="momentum-label" data-key="lblMomentum">${strings[lang].lblMomentum}</span>
-      <span class="momentum-pct" id="momentum-val">${pct}%</span>
+      <span class="momentum-label">${strings[lang].lblMomentum}</span>
+      <span class="momentum-pct">${pct}%</span>
     </div>
-    <div class="momentum-bar"><div class="momentum-fill" id="momentum-fill" style="width:${pct}%"></div></div>
-  `;
+    <div class="momentum-bar"><div class="momentum-fill" style="width:${pct}%"></div></div>`;
   box.appendChild(momentum);
-
   updateRemaining();
 }
 
-function toggleWin(id) {
-  const item = winItems.find(w => w.id === id);
-  if (item) { item.done = !item.done; saveState(); renderWins(); }
+function toggleWin(id){const item=winItems.find(w=>w.id===id);if(item){item.done=!item.done;saveState();renderWins()}}
+function updateRemaining(){const rem=winItems.filter(w=>!w.done).length;document.getElementById('lbl-remaining').textContent=strings[lang].remaining(rem)}
+
+function applyStrings(){
+  const s=strings[lang];
+  document.querySelectorAll('[data-key]').forEach(el=>{const k=el.dataset.key;if(s[k]!==undefined)el.innerHTML=s[k]});
+  const input=document.getElementById('capture-input');
+  if(input)input.placeholder=s.placeholder;
+  document.documentElement.lang=lang;
+  document.documentElement.classList.toggle('ar',lang==='ar');
 }
 
-function updateRemaining() {
-  const rem = winItems.filter(w => !w.done).length;
-  document.getElementById('lbl-remaining').textContent = strings[lang].remaining(rem);
+function toggleLang(){lang=lang==='en'?'ar':'en';applyStrings();renderTriage();renderWins()}
+
+function updateClock(){
+  const eat=new Date(new Date().toLocaleString('en-US',{timeZone:'Africa/Nairobi'}));
+  const hh=String(eat.getHours()).padStart(2,'0');
+  const mm=String(eat.getMinutes()).padStart(2,'0');
+  document.getElementById('top-time').textContent=hh+':'+mm+' EAT';
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const daysAr=['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthsAr=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  document.getElementById('top-date').textContent=lang==='en'
+    ?days[eat.getDay()]+', '+eat.getDate()+' '+months[eat.getMonth()]
+    :daysAr[eat.getDay()]+'، '+eat.getDate()+' '+monthsAr[eat.getMonth()];
 }
 
-// ── Language toggle ───────────────────────────────────────────────
-function applyStrings() {
-  const s = strings[lang];
-  document.querySelectorAll('[data-key]').forEach(el => {
-    const key = el.dataset.key;
-    if (s[key] !== undefined) el.innerHTML = s[key];
-  });
-  const input = document.getElementById('capture-input');
-  if (input) input.placeholder = s.placeholder;
-  document.documentElement.lang = lang;
-  document.documentElement.classList.toggle('ar', lang === 'ar');
-}
+function openDrawer(){document.getElementById('mobile-overlay').classList.add('open');document.getElementById('mobile-drawer').classList.add('open')}
+function closeDrawer(){document.getElementById('mobile-overlay').classList.remove('open');document.getElementById('mobile-drawer').classList.remove('open')}
 
-function toggleLang() {
-  lang = lang === 'en' ? 'ar' : 'en';
-  applyStrings();
-  renderTriage();
-  renderWins();
-}
+document.getElementById('btn-triage').addEventListener('click',addTriageTask);
+document.getElementById('capture-input').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();addTriageTask()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
 
-// ── Clock ─────────────────────────────────────────────────────────
-function updateClock() {
-  const eat = new Date(new Date().toLocaleString('en-US', { timeZone: 'Africa/Nairobi' }));
-  const hh = String(eat.getHours()).padStart(2, '0');
-  const mm = String(eat.getMinutes()).padStart(2, '0');
-  document.getElementById('top-time').textContent = hh + ':' + mm + ' EAT';
-  const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const daysAr = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-  const months   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const monthsAr = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-  document.getElementById('top-date').textContent = lang === 'en'
-    ? days[eat.getDay()] + ', ' + eat.getDate() + ' ' + months[eat.getMonth()]
-    : daysAr[eat.getDay()] + '، ' + eat.getDate() + ' ' + monthsAr[eat.getMonth()];
-}
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
+},{threshold:0.15});
+document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
 
-// ── Mobile drawer ─────────────────────────────────────────────────
-function openDrawer() {
-  document.getElementById('mobile-overlay').classList.add('open');
-  document.getElementById('mobile-drawer').classList.add('open');
-}
-function closeDrawer() {
-  document.getElementById('mobile-overlay').classList.remove('open');
-  document.getElementById('mobile-drawer').classList.remove('open');
-}
-
-// ── Init ──────────────────────────────────────────────────────────
-document.getElementById('btn-triage').addEventListener('click', addTriageTask);
-document.getElementById('capture-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addTriageTask(); }
-});
-
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-}, { threshold: 0.15 });
-document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
-
-applyStrings();
-renderTriage();
-renderWins();
-updateClock();
-setInterval(updateClock, 30000);
+applyStrings();renderTriage();renderWins();updateClock();
+setInterval(updateClock,30000);
 </script>
 </body>
 </html>
